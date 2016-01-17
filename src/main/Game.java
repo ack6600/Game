@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 @SuppressWarnings("serial")
-public class Game extends JPanel implements KeyListener{
+public class Game extends JPanel implements KeyListener,ActionListener{
 	public static int ballX = 200;
 	public static int ballY = 200;
 	
@@ -23,7 +23,7 @@ public class Game extends JPanel implements KeyListener{
 	private int rectWidth = 10;
 	private int rectHeight = 10;
 	private static int refreshRate = 60;
-	private static long lastTime = 0;
+	private static long lastTime = System.currentTimeMillis();
 	private static long frameRate = 0;
 	private int steadyFrameRate;
 	private boolean w;
@@ -78,7 +78,7 @@ public class Game extends JPanel implements KeyListener{
 		}
 		g2d.drawString(new Integer(steadyFrameRate).toString(), 2, 12);
 //		try {
-//			Thread.sleep(10);
+//			Thread.sleep(1);
 //		} catch (InterruptedException e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
@@ -104,19 +104,8 @@ public class Game extends JPanel implements KeyListener{
 		JFrame mainFrame = new JFrame();
 		Game mainGame = new Game();
 		mainGame.addKeyListener(mainGame);
-		ActionListener timerAction = new ActionListener()
-				{
-
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						// TODO Auto-generated method stub
-						mainGame.repaint();
-						frameRate = 1000/(System.currentTimeMillis() - lastTime);
-						lastTime = System.currentTimeMillis();
-					}
-			
-				};
-		new Timer((1000/refreshRate), timerAction).start();
+		
+		new Timer(1000/refreshRate, mainGame).start();
 		//controls
 //		mainGame.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), "up");
 //		mainGame.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), "down");
@@ -184,6 +173,21 @@ public class Game extends JPanel implements KeyListener{
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
+		this.repaint();
+		try
+		{
+		frameRate = 1000/(System.currentTimeMillis() - lastTime);
+		lastTime = System.currentTimeMillis();
+		}
+		catch(ArithmeticException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 }
