@@ -9,11 +9,11 @@ import main.Game;
 @SuppressWarnings("serial")
 public class UpAction extends AbstractAction{
 
-	Game mainGame = new Game();
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public synchronized void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		mainGame.setBallY(mainGame.getBallY()+1);
+		Game.ballY--;
+		System.out.println("hello");
 	}
 
 }

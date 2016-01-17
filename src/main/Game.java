@@ -7,42 +7,29 @@ import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Random;
 
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
-import commands.DownAction;
-import commands.LeftAction;
-import commands.RightAction;
-import commands.UpAction;
-
 @SuppressWarnings("serial")
-public class Game extends JPanel{
-	private int ballX = 200;
-	private int ballY = 200;
+public class Game extends JPanel implements KeyListener{
+	public static int ballX = 200;
+	public static int ballY = 200;
 	
-	public int getBallX() {
-		return ballX;
-	}
-	public void setBallX(int ballX) {
-		this.ballX = ballX;
-	}
-	public int getBallY() {
-		return ballY;
-	}
-	public void setBallY(int ballY) {
-		this.ballY = ballY;
-	}
+
 	private int rectWidth = 10;
 	private int rectHeight = 10;
-	private static int refreshRate = 100;
+	private static int refreshRate = 60;
 	private static long lastTime = 0;
 	private static long frameRate = 0;
 	private int steadyFrameRate;
+	private boolean w;
+	private boolean a;
+	private boolean s;
+	private boolean d;
 //	private Ball ball = new Ball();
 	private int[] lastFrameRates = {0,0,0,0,0};
 	private int average;
@@ -50,6 +37,27 @@ public class Game extends JPanel{
 	Random r = new Random();
 //	private int ballTargetX = r.nextInt(400);
 //	private int ballTargetY = r.nextInt(400);
+	public void moveBall()
+	{
+		
+		if(w)
+		{
+			ballY--;
+			
+		}
+		if(a)
+		{
+			ballX--;
+		}
+		if(s)
+		{
+			ballY++;
+		}
+		if(d)
+		{
+			ballX++;
+		}
+	}
 	@Override
 	public void paint(Graphics g)
 	{
@@ -95,6 +103,7 @@ public class Game extends JPanel{
 		// TODO Auto-generated method stub
 		JFrame mainFrame = new JFrame();
 		Game mainGame = new Game();
+		mainGame.addKeyListener(mainGame);
 		ActionListener timerAction = new ActionListener()
 				{
 
@@ -109,19 +118,72 @@ public class Game extends JPanel{
 				};
 		new Timer((1000/refreshRate), timerAction).start();
 		//controls
-		mainGame.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), "up");
-		mainGame.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), "down");
-		mainGame.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), "left");
-		mainGame.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0), "right");
-		mainGame.getActionMap().put("up", new UpAction());
-		mainGame.getActionMap().put("down", new DownAction());
-		mainGame.getActionMap().put("left", new LeftAction());
-		mainGame.getActionMap().put("right", new RightAction());
+//		mainGame.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), "up");
+//		mainGame.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), "down");
+//		mainGame.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), "left");
+//		mainGame.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0), "right");
+//		mainGame.getActionMap().put("up", new UpAction());
+//		mainGame.getActionMap().put("down", new DownAction());
+//		mainGame.getActionMap().put("left", new LeftAction());
+//		mainGame.getActionMap().put("right", new RightAction());
 		mainFrame.add(mainGame);
+		mainFrame.addKeyListener(mainGame);
 		mainFrame.setSize(400, 400);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.setVisible(true);
-
+		while(true)
+		{
+			mainGame.moveBall();
+			Thread.sleep(10);
+		}
+	}
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		if (arg0.getKeyChar() == 'w')
+		{
+			w = true;
+			
+		}
+		if (arg0.getKeyChar() == 'a')
+		{
+			a = true;
+		}
+		if (arg0.getKeyChar() == 's')
+		{
+			s = true;
+		}
+		if (arg0.getKeyChar() == 'd')
+		{
+			d = true;
+		}
+		
+		
+	}
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		if (arg0.getKeyChar() == 'w')
+		{
+			w = false;
+		}
+		if (arg0.getKeyChar() == 'a')
+		{
+			a = false;
+		}
+		if (arg0.getKeyChar() == 's')
+		{
+			s = false;
+		}
+		if (arg0.getKeyChar() == 'd')
+		{
+			d = false;
+		}
+	}
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
