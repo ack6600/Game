@@ -14,6 +14,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import world.Ball;
+
 @SuppressWarnings("serial")
 public class Game extends JPanel implements KeyListener,ActionListener{
 	public static int ballX = 200;
@@ -26,10 +28,7 @@ public class Game extends JPanel implements KeyListener,ActionListener{
 	private static long lastTime = System.currentTimeMillis();
 	private static long frameRate = 0;
 	private int steadyFrameRate;
-	private boolean w;
-	private boolean a;
-	private boolean s;
-	private boolean d;
+	private static Ball ball;
 //	private Ball ball = new Ball();
 	private int[] lastFrameRates = {0,0,0,0,0};
 	private int average;
@@ -37,27 +36,7 @@ public class Game extends JPanel implements KeyListener,ActionListener{
 	Random r = new Random();
 //	private int ballTargetX = r.nextInt(400);
 //	private int ballTargetY = r.nextInt(400);
-	public void moveBall()
-	{
-		
-		if(w)
-		{
-			ballY--;
-			
-		}
-		if(a)
-		{
-			ballX--;
-		}
-		if(s)
-		{
-			ballY++;
-		}
-		if(d)
-		{
-			ballX++;
-		}
-	}
+	
 	@Override
 	public void paint(Graphics g)
 	{
@@ -85,6 +64,14 @@ public class Game extends JPanel implements KeyListener,ActionListener{
 //		}
 		
 	}
+	public void renderBlock()
+	{
+		
+	}
+	public void renderEntity()
+	{
+		
+	}
 	public int calculateFrameRate(int fRate)
 	{
 		for(int i = 0; i<lastFrameRates.length-1; i++)
@@ -104,7 +91,7 @@ public class Game extends JPanel implements KeyListener,ActionListener{
 		JFrame mainFrame = new JFrame();
 		Game mainGame = new Game();
 		mainGame.addKeyListener(mainGame);
-		
+		ball = new Ball(0,0);
 		new Timer(1000/refreshRate, mainGame).start();
 		//controls
 //		mainGame.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), "up");
@@ -122,7 +109,7 @@ public class Game extends JPanel implements KeyListener,ActionListener{
 		mainFrame.setVisible(true);
 		while(true)
 		{
-			mainGame.moveBall();
+			ball.moveBall();
 			Thread.sleep(10);
 		}
 	}
@@ -131,20 +118,20 @@ public class Game extends JPanel implements KeyListener,ActionListener{
 		// TODO Auto-generated method stub
 		if (arg0.getKeyChar() == 'w')
 		{
-			w = true;
+			ball.w = true;
 			
 		}
 		if (arg0.getKeyChar() == 'a')
 		{
-			a = true;
+			ball.a = true;
 		}
 		if (arg0.getKeyChar() == 's')
 		{
-			s = true;
+			ball.s = true;
 		}
 		if (arg0.getKeyChar() == 'd')
 		{
-			d = true;
+			ball.d = true;
 		}
 		
 		
@@ -154,19 +141,19 @@ public class Game extends JPanel implements KeyListener,ActionListener{
 		// TODO Auto-generated method stub
 		if (arg0.getKeyChar() == 'w')
 		{
-			w = false;
+			ball.w = false;
 		}
 		if (arg0.getKeyChar() == 'a')
 		{
-			a = false;
+			ball.a = false;
 		}
 		if (arg0.getKeyChar() == 's')
 		{
-			s = false;
+			ball.s = false;
 		}
 		if (arg0.getKeyChar() == 'd')
 		{
-			d = false;
+			ball.d = false;
 		}
 	}
 	@Override
