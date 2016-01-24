@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import main.Game;
+import render.Game;
 
 @SuppressWarnings("serial")
 public class DownAction extends AbstractAction{

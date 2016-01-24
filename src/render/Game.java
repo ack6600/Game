@@ -1,6 +1,5 @@
-package main;
+package render;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -45,10 +44,8 @@ public class Game extends JPanel implements KeyListener,ActionListener{
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setColor(Color.BLUE);
 
-		g2d.fillRect(ballX, ballY, rectWidth, rectHeight);
+		g2d.fillRect(ball.getPosX(), ball.getPosY(), rectWidth, rectHeight);
 
-		Font f = new Font("Font",Font.PLAIN,12);
-		g2d.setFont(f);
 		shouldCalculate++;
 		if(shouldCalculate > 10)
 		{
@@ -64,11 +61,7 @@ public class Game extends JPanel implements KeyListener,ActionListener{
 //		}
 		
 	}
-	public void renderBlock()
-	{
-		
-	}
-	public void renderEntity()
+	public void addToRenderList(RenderObject toRender)
 	{
 		
 	}
@@ -91,7 +84,7 @@ public class Game extends JPanel implements KeyListener,ActionListener{
 		JFrame mainFrame = new JFrame();
 		Game mainGame = new Game();
 		mainGame.addKeyListener(mainGame);
-		ball = new Ball(0,0);
+		ball = new Ball(200,200);
 		new Timer(1000/refreshRate, mainGame).start();
 		//controls
 //		mainGame.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), "up");
@@ -111,6 +104,7 @@ public class Game extends JPanel implements KeyListener,ActionListener{
 		{
 			ball.moveBall();
 			Thread.sleep(10);
+//			mainGame.steadyFrameRate = mainGame.calculateFrameRate((int) frameRate);
 		}
 	}
 	@Override
